@@ -1,3 +1,8 @@
+@keyframes blip {
+  0% { color: black; }
+  100% { color: white;   }
+}
+
 #total-container {
   width: 400px;
   height: 600px;
@@ -19,6 +24,11 @@
   text-align: right;
   font-size: xx-large;
   padding-right: 20px;
+}
+
+.blip {
+  animation: blip;
+  animation-duration: .1s;
 }
 
 #buttons-wrapper {
