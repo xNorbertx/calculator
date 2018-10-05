@@ -1,108 +1,154 @@
-var DISPLAY;
-var C = {
-  first: null,
-  operation: null,
-  second: null,
-  prev: null,
-  active: null
-};
-
-function setCalculation(val) {
-  if (C.active === 'first') {
-    C.first = parseFloat(val.replace(",", "."));
-  } else {
-    C.second = parseFloat(val.replace(",", "."));
-  }
-}
-
-function setNumber(val) {
-  var displayField = $(".display-screen");
-  displayField.stop(true).animate({
-    fontSize: '0px'
-  }, 20, 'linear', function() {
-    displayField.css('font-size', 'xx-large');
-  });
-  $("#clear").val("C");
-  if (val === "," && C.prev) {
-    DISPLAY = "0" + val;
-  } else if (displayField.val() === "0" && val !== ","
-      || C.prev === 'arit'
-      || C.prev === 'calc') {
-    DISPLAY = val;
-  } else {
-    DISPLAY = displayField.val() + val;
-  }
-  setCalculation(DISPLAY);
-  C.prev = null;
-	displayField.val(DISPLAY);
-}
-
-function cleardisplay() {
-  $(".display-screen").val(0);
-  $("#clear").val("AC");
-  DISPLAY = "0";
-  C.first = null;
-  C.operation = null;
-  C.second = null;
-  C.prev = null;
+//SET EVENT HANDLERS
+$(function() {
   C.active = 'first';
-}
+  C.display = $(".display-screen");
+  $(".number").click(function() {
+    C.set(this.value);
+  });
+  $("#clear").click(function() {
+    C.clear();
+  });
+  $("#reverse").click(function() {
+    C.reverse();
+  });
+  $("#percentage").click(function() {
+    C.percentage();
+  });
+  $("#calc").click(function() {
+    C.calculate();
+  });
+  $(".ops").click(function() {
+    C.op(this.value);
+  });
+})
 
-function arithmeticOperation(val) {
-  C.operation = val;
-  C.prev = 'arit';
-  C.active = 'second';
-}
+//MODULE OBJECT
+const C = (function() {
+  var first,
+      operation,
+      second,
+      prev,
+      active,
+      display;
 
-function reverseAbsolute() {
-  var res = parseFloat(DISPLAY.replace(",", "."));
-  res = -res;
-  if ( C.active === 'first') {
-    C.first = res;
-  } else {
-    C.second = res;
-  }
-  DISPLAY = res.toString().replace(".", ",");
-  $(".display-screen").val(DISPLAY);
-}
-
-function calculate() {
-  C.prev = 'calc';
-  if (C.operation) {
-    var res;
-    switch (C.operation) {
-      case 'add':
-        res = C.first + C.second;
-        break;
-      case 'subtract':
-        res = C.first - C.second;
-        break;
-      case 'multiply':
-        res = C.first * C.second;
-        break;
-      case 'divide':
-        res = C.first / C.second;
-        break;
-      default:
-        res = 0;
-        break;
+  ///HELPER FUNCTIONS
+  function getNumberBasedOnActive() {
+    if ( C.active === 'first') {
+      return C.first;
+    } else {
+      return C.second;
     }
-    C.first = res;
-    C.active = 'first';
-    DISPLAY = res.toString().replace(".", ",");
-    $(".display-screen").val(DISPLAY);
   }
-}
 
-function calculatePercentage() {
-  var res;
-  if ( C.active === 'first') {
-    res = C.first / 100
-    C.first = res;
-  } else if ( C.active === 'second' ){
-    res = C.second / 100;
-    C.second = res;
+  function setNumberBasedOnActive(res) {
+    if ( C.active === 'first') {
+      C.first = res;
+    } else {
+      C.second = res;
+    }
   }
-  DISPLAY = res.toString().replace(".", ",");
-  $(".display-screen").val(DISPLAY);
-}
+
+  function animateField(fld) {
+    fld.stop(true).animate({
+      fontSize: '0px'
+    }, 20, 'linear', function() {
+      fld.css('font-size', 'xx-large');
+    });
+  }
+
+  function setClearButton(val) {
+    $("#clear").val(val);
+  }
+
+  function numToString(num) {
+    return num.toString().replace(".",",");
+  }
+
+  function stringToNum(str) {
+    return parseFloat(str.replace(",","."))
+  }
+
+  ///MAIN FUNCTIONS
+  function setNumber(val) {
+    var res;
+    animateField(this.display);
+    setClearButton("C");
+    if (val === "," && this.prev) {
+      res = "0" + val;
+    } else if ((this.display.val() === "0" && val !== ",") || this.prev) {
+      res = val;
+    } else {
+      res = this.display.val() + val;
+    }
+    setNumberBasedOnActive(stringToNum(res));
+    this.prev = null;
+    this.display.val(res);
+  }
+  
+  function arithmeticOperation(val) {
+    this.operation = val;
+    this.prev = 'arit';
+    this.active = 'second';
+  }
+  
+  function reverseAbsolute() {
+    var res = stringToNum(this.display.val());
+    res = -res;
+    setNumberBasedOnActive(res);
+    this.display.val(numToString(res));
+  }
+
+  function calculatePercentage() {
+    var res = getNumberBasedOnActive();
+    res / 100;
+    setNumberBasedOnActive(res);
+    this.display.val(numToString(res));
+  }
+  
+  function calculate() {
+    this.prev = 'calc';
+    if (this.operation) {
+      var res;
+      switch (this.operation) {
+        case '+':
+          res = this.first + this.second;
+          break;
+        case '-':
+          res = this.first - this.second;
+          break;
+        case 'x':
+          res = this.first * this.second;
+          break;
+        case '/':
+          res = this.first / this.second;
+          break;
+        default:
+          res = 0;
+          break;
+      }
+      this.first = res;
+      this.active = 'first';
+      this.display.val(numToString(res));   
+    }
+    animateField(this.display);
+  }
+
+  function cleardisplay() {
+    setClearButton("AC");
+    this.first = null;
+    this.operation = null;
+    this.second = null;
+    this.prev = null;
+    this.active = 'first';
+    this.display.val("0");
+  }
+  
+  return {
+    set: setNumber,
+    clear: cleardisplay,
+    op: arithmeticOperation,
+    reverse: reverseAbsolute,
+    calculate: calculate,
+    percentage: calculatePercentage
+  }
+}());

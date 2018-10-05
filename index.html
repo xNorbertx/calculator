@@ -14,33 +14,33 @@
       </div>
       <div id="buttons-wrapper">
         <div class="row">
-          <input type="button" onclick="cleardisplay()" id="clear" class="btn" value="AC"/>
-          <input type="button" onclick="reverseAbsolute()" class="btn" value="+/-"/>
-          <input type="button" onclick="calculatePercentage()" class="btn" value="%"/>
-          <input type="button" onclick="arithmeticOperation('divide')" class="btn orange" value="/"/>
+          <input type="button" id="clear" class="btn" value="AC"/>
+          <input type="button" id="reverse" class="btn" value="+/-"/>
+          <input type="button" id="percentage" class="btn" value="%"/>
+          <input type="button" class="btn orange ops" value="/"/>
         </div>
         <div class="row">
-          <input type="button" onclick="setNumber(this.value)" class="btn" value="7"/>
-          <input type="button" onclick="setNumber(this.value)" class="btn" value="8"/>
-          <input type="button" onclick="setNumber(this.value)" class="btn" value="9"/>
-          <input type="button" onclick="arithmeticOperation('multiply')" class="btn orange" value="x"/>
+          <input type="button" class="btn number" value="7"/>
+          <input type="button" class="btn number" value="8"/>
+          <input type="button" class="btn number" value="9"/>
+          <input type="button" class="btn orange ops" value="x"/>
         </div>
         <div class="row">
-          <input type="button" onclick="setNumber(this.value)" class="btn" value="4"/>
-          <input type="button" onclick="setNumber(this.value)" class="btn" value="5"/>
-          <input type="button" onclick="setNumber(this.value)" class="btn" value="6"/>
-          <input type="button" onclick="arithmeticOperation('subtract')" class="btn orange" value="-"/>
+          <input type="button" class="btn number" value="4"/>
+          <input type="button" class="btn number" value="5"/>
+          <input type="button" class="btn number" value="6"/>
+          <input type="button" class="btn orange ops" value="-"/>
         </div>
         <div class="row">
-          <input type="button" onclick="setNumber(this.value)" class="btn" value="1"/>
-          <input type="button" onclick="setNumber(this.value)" class="btn" value="2"/>
-          <input type="button" onclick="setNumber(this.value)"class="btn" value="3"/>
-          <input type="button" onclick="arithmeticOperation('add')" class="btn orange" value="+"/>
+          <input type="button" class="btn number" value="1"/>
+          <input type="button" class="btn number" value="2"/>
+          <input type="button" class="btn number" value="3"/>
+          <input type="button" class="btn orange ops" value="+"/>
         </div>
         <div class="row">
-          <input type="button" onclick="setNumber(this.value)" class="btn dbl" value="0" />
-          <input type="button" onclick="setNumber(this.value)" class="btn" value="," />
-          <input type="button" onclick="calculate()" class="btn orange" value="=" />
+          <input type="button" class="btn dbl number" value="0" />
+          <input type="button" class="btn number" value="," />
+          <input type="button" id="calc" class="btn orange" value="=" />
         </div>
       </div>
     </div>
