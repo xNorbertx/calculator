@@ -1,10 +1,5 @@
-$(".btn").on("click", function() {
-  $(".display-screen").attr('class', tmp + ' blip');
-});
-
-var tmp = "display-screen";
 var DISPLAY;
-var CALCULATION = {
+var C = {
   first: null,
   operation: null,
   second: null,
@@ -13,27 +8,32 @@ var CALCULATION = {
 };
 
 function setCalculation(val) {
-  if (CALCULATION.active === 'first') {
-    CALCULATION.first = parseFloat(val.replace(",", "."));
+  if (C.active === 'first') {
+    C.first = parseFloat(val.replace(",", "."));
   } else {
-    CALCULATION.second = parseFloat(val.replace(",", "."));
+    C.second = parseFloat(val.replace(",", "."));
   }
 }
 
 function setNumber(val) {
-	var displayField = $(".display-screen");
+  var displayField = $(".display-screen");
+  displayField.stop(true).animate({
+    fontSize: '0px'
+  }, 20, 'linear', function() {
+    displayField.css('font-size', 'xx-large');
+  });
   $("#clear").val("C");
-  if (val === "," && CALCULATION.prev) {
+  if (val === "," && C.prev) {
     DISPLAY = "0" + val;
   } else if (displayField.val() === "0" && val !== ","
-      || CALCULATION.prev === 'arit'
-      || CALCULATION.prev === 'calc') {
+      || C.prev === 'arit'
+      || C.prev === 'calc') {
     DISPLAY = val;
   } else {
     DISPLAY = displayField.val() + val;
   }
   setCalculation(DISPLAY);
-  CALCULATION.prev = null;
+  C.prev = null;
 	displayField.val(DISPLAY);
 }
 
@@ -41,54 +41,54 @@ function cleardisplay() {
   $(".display-screen").val(0);
   $("#clear").val("AC");
   DISPLAY = "0";
-  CALCULATION.first = null;
-  CALCULATION.operation = null;
-  CALCULATION.second = null;
-  CALCULATION.prev = null;
-  CALCULATION.active = 'first';
+  C.first = null;
+  C.operation = null;
+  C.second = null;
+  C.prev = null;
+  C.active = 'first';
 }
 
 function arithmeticOperation(val) {
-  CALCULATION.operation = val;
-  CALCULATION.prev = 'arit';
-  CALCULATION.active = 'second';
+  C.operation = val;
+  C.prev = 'arit';
+  C.active = 'second';
 }
 
 function reverseAbsolute() {
   var res = parseFloat(DISPLAY.replace(",", "."));
   res = -res;
-  if ( CALCULATION.active === 'first') {
-    CALCULATION.first = res;
+  if ( C.active === 'first') {
+    C.first = res;
   } else {
-    CALCULATION.second = res;
+    C.second = res;
   }
   DISPLAY = res.toString().replace(".", ",");
   $(".display-screen").val(DISPLAY);
 }
 
 function calculate() {
-  CALCULATION.prev = 'calc';
-  if (CALCULATION.operation) {
+  C.prev = 'calc';
+  if (C.operation) {
     var res;
-    switch (CALCULATION.operation) {
+    switch (C.operation) {
       case 'add':
-        res = CALCULATION.first + CALCULATION.second;
+        res = C.first + C.second;
         break;
       case 'subtract':
-        res = CALCULATION.first - CALCULATION.second;
+        res = C.first - C.second;
         break;
       case 'multiply':
-        res = CALCULATION.first * CALCULATION.second;
+        res = C.first * C.second;
         break;
       case 'divide':
-        res = CALCULATION.first / CALCULATION.second;
+        res = C.first / C.second;
         break;
       default:
         res = 0;
         break;
     }
-    CALCULATION.first = res;
-    CALCULATION.active = 'first';
+    C.first = res;
+    C.active = 'first';
     DISPLAY = res.toString().replace(".", ",");
     $(".display-screen").val(DISPLAY);
   }
@@ -96,12 +96,12 @@ function calculate() {
 
 function calculatePercentage() {
   var res;
-  if ( CALCULATION.active === 'first') {
-    res = CALCULATION.first / 100
-    CALCULATION.first = res;
-  } else if ( CALCULATION.active === 'second' ){
-    res = CALCULATION.second / 100;
-    CALCULATION.second = res;
+  if ( C.active === 'first') {
+    res = C.first / 100
+    C.first = res;
+  } else if ( C.active === 'second' ){
+    res = C.second / 100;
+    C.second = res;
   }
   DISPLAY = res.toString().replace(".", ",");
   $(".display-screen").val(DISPLAY);
