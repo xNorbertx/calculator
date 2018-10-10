@@ -54,9 +54,6 @@ const C = (function() {
     }, 20, 'linear', function() {
       fld.css('font-size', 'xx-large');
     });
-    // fld.fadeOut('normal', function() {
-    //   fld.fadeIn();
-    // });
   }
 
   function setClearButton(val) {
