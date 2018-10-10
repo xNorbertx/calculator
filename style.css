@@ -5,12 +5,8 @@
   border: 1px solid black;
 }
 
-#display {
-  width: 400px;
-  height: 100px;
-}
-
 .display-screen {
+  position: relative;
   width: 400px;
   height: 100px;
   border: none;
@@ -18,7 +14,14 @@
   color: white;
   text-align: right;
   font-size: xx-large;
-  padding-right: 20px;
+}
+
+.display-val {
+  position: absolute;
+  right: 20px;
+  top: 33px;
+  font-family: sans-serif;
+  letter-spacing: 2px;
 }
 
 #buttons-wrapper {

@@ -1,7 +1,7 @@
 //SET EVENT HANDLERS
 $(function() {
   C.active = 'first';
-  C.display = $(".display-screen");
+  C.display = $(".display-val");
   $(".number").click(function() {
     C.set(this.value);
   });
@@ -50,10 +50,13 @@ const C = (function() {
 
   function animateField(fld) {
     fld.stop(true).animate({
-      fontSize: '0px'
+      'font-size': '0px'
     }, 20, 'linear', function() {
       fld.css('font-size', 'xx-large');
     });
+    // fld.fadeOut('normal', function() {
+    //   fld.fadeIn();
+    // });
   }
 
   function setClearButton(val) {
@@ -75,14 +78,14 @@ const C = (function() {
     setClearButton("C");
     if (val === "," && this.prev) {
       res = "0" + val;
-    } else if ((this.display.val() === "0" && val !== ",") || this.prev) {
+    } else if ((this.display.text() === "0" && val !== ",") || this.prev) {
       res = val;
     } else {
-      res = this.display.val() + val;
+      res = this.display.text() + val;
     }
     setNumberBasedOnActive(stringToNum(res));
     this.prev = null;
-    this.display.val(res);
+    this.display.text(res);
   }
   
   function arithmeticOperation(val) {
@@ -92,17 +95,17 @@ const C = (function() {
   }
   
   function reverseAbsolute() {
-    var res = stringToNum(this.display.val());
+    var res = stringToNum(this.display.text());
     res = -res;
     setNumberBasedOnActive(res);
-    this.display.val(numToString(res));
+    this.display.text(numToString(res));
   }
 
   function calculatePercentage() {
     var res = getNumberBasedOnActive();
     res / 100;
     setNumberBasedOnActive(res);
-    this.display.val(numToString(res));
+    this.display.text(numToString(res));
   }
   
   function calculate() {
@@ -128,7 +131,7 @@ const C = (function() {
       }
       this.first = res;
       this.active = 'first';
-      this.display.val(numToString(res));   
+      this.display.text(numToString(res));   
     }
     animateField(this.display);
   }
@@ -140,7 +143,7 @@ const C = (function() {
     this.second = null;
     this.prev = null;
     this.active = 'first';
-    this.display.val("0");
+    this.display.text("0");
   }
   
   return {
