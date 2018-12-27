@@ -48,14 +48,6 @@ const C = (function() {
     }
   }
 
-  function animateField(fld) {
-    fld.stop(true).animate({
-      'font-size': '0px'
-    }, 20, 'linear', function() {
-      fld.css('font-size', 'xx-large');
-    });
-  }
-
   function setClearButton(val) {
     $("#clear").val(val);
   }
@@ -71,7 +63,6 @@ const C = (function() {
   ///MAIN FUNCTIONS
   function setNumber(val) {
     var res;
-    animateField(this.display);
     setClearButton("C");
     if (val === "," && this.prev) {
       res = "0" + val;
@@ -130,7 +121,6 @@ const C = (function() {
       this.active = 'first';
       this.display.text(numToString(res));   
     }
-    animateField(this.display);
   }
 
   function cleardisplay() {
