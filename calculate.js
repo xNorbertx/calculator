@@ -91,7 +91,7 @@ const C = (function() {
 
   function calculatePercentage() {
     var res = getNumberBasedOnActive();
-    res / 100;
+    res = res / 100;
     setNumberBasedOnActive(res);
     this.display.text(numToString(res));
   }
